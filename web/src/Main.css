@@ -3,42 +3,6 @@ main {
   align-items: center;
 }
 
-/* FORM */
-main form {
-  width: 340px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 30px;
-}
-
-main form label{
-  font-size: 18px;
-  font-weight: bold;
-  display: inline-block;
-}
-
-main form input {
-  width: 140px;
-  height: 18px;
-  font-size: 14px;
-  margin-left: 6px;
-  border: 0;
-  border-radius: 2px;
-}
-
-main form button {
-  border: 0;
-  background: #737373;
-  color: #FFF;
-  border-radius: 2px;
-  font-size: 12px;
-  cursor: pointer;
-  padding: 2px 6px;
-  margin-left: 6px;
-}
-
 /* LIST */
 main ul {
   display: grid;
@@ -47,49 +11,8 @@ main ul {
   list-style: none;
 }
 
-li.member-item {
-  background: #262626;
-  border-radius: 2px;
-  padding: 10px 30px;
-  cursor: pointer;
-}
-
-li.member-item header {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-li.member-item header img {
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-}
-
-li.member-item header .member-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0 auto;
-  margin-left: 10px;
-}
-
-.member-info strong {
-  display: block;
-  font-size: 18px;
-}
-
-.member-info span {
-  font-size: 14px;
-  margin-top: 2px;
-}
-
 @media (max-width: 608px) {
   main ul {
     grid-template-columns: 1fr;
-  }
-
-  li.member-item header .member-info {
-    margin-left: 70px;
   }
 }
