@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import api from './services/api';
 
 import './global.css';
@@ -8,11 +8,13 @@ import './Main.css';
 
 import MemberItem from './components/MemberItem';
 import MemberForm from './components/MemberForm';
+import MemberProfile from './components/MemberProfile';
 
-function App() {
-  const [members, setMembers] = useState([]);
+const App = () => {
+  const [ members, setMembers ] = useState([]);
+  const [ memberProfile, setMemberProfile ] = useState();
 
-  async function listButtonClickHandler(e) {
+  const listButtonClickHandler = async (e) => {
     e.preventDefault();
 
     const response = await api.get('/orgs/grupotesseract/public_members');
@@ -24,8 +26,27 @@ function App() {
     setMembers(membersResponse);
   }
 
-  const searchFormSubmitHandler = () => {
-    
+  const searchFormSubmitHandler = useCallback((inputValue) => {
+    api.get(`/users/${inputValue}`).then((response) => {
+      const memberResponse = [{
+        avatarUrl: response.data.avatar_url,
+        login: response.data.login,
+      }];
+  
+      setMembers(memberResponse);
+    }).catch((err) => {
+      console.log(err);
+    });
+  }, []);
+
+  const memberClickHandler = async (e) => {
+    const memberLogin = e.target.dataset.member;
+    const response = await api.get(`/users/${memberLogin}`);
+    setMemberProfile(response.data);
+  };
+
+  const backButtonClickHandler = () => {
+    setMemberProfile(null);
   };
 
   return (
@@ -36,16 +57,20 @@ function App() {
         <button type="submit" onClick={listButtonClickHandler}>Look</button>
       </header>
       <main>
-        {members.length > 0 && (
+        {members.length > 0 && !memberProfile && (
           <>
             <MemberForm onSubmit={searchFormSubmitHandler}/>
 
             <ul>
               {members.map((member, index) => (
-                <MemberItem key={index} member={member} />
+                <MemberItem data-member={member.login} key={index} member={member} onClick={memberClickHandler} />
               ))}
             </ul>
           </>
+        )}
+
+        {memberProfile && (
+          <MemberProfile profile={memberProfile} onBackButtonClick={backButtonClickHandler} />
         )}
       </main>
     </div>

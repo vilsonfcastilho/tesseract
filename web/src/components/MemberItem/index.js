@@ -2,10 +2,10 @@ import React from 'react';
 
 import './styles.css';
 
-function MemberItem({ member }) {
+const MemberItem = ({ member, onClick: memberClickHandler }) => {
   const { avatarUrl, login } = member;
   return (
-    <li className="member-item">
+    <li className="member-item" onClick={memberClickHandler}>
       <header>
         <img src={avatarUrl} alt={login}/>
         <div className="member-info"> 
