@@ -5,7 +5,7 @@ import './styles.css';
 const MemberItem = ({ member, onClick: memberClickHandler }) => {
   const { avatarUrl, login } = member;
   return (
-    <li className="member-item" onClick={memberClickHandler}>
+    <li className="member-item" data-member={login} onClick={memberClickHandler}>
       <header>
         <img src={avatarUrl} alt={login}/>
         <div className="member-info"> 

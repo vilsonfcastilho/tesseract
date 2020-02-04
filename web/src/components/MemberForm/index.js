@@ -7,10 +7,7 @@ const MemberForm = React.memo(({ onSubmit }) => {
 
   const searchFormSubmitHandler = (e) => {
     e.preventDefault();
-
-    if(inputValue !== '' && inputValue !== null) {
-      onSubmit(inputValue);
-    }
+    onSubmit(inputValue);
   }
 
   const searchInputChangeHandler = (e) => {

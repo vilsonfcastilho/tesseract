@@ -1,0 +1,48 @@
+div.member-item {
+  background: #262626;
+  border-radius: 2px;
+  padding: 10px 30px;
+}
+
+div.member-item header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+div.member-item header img {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+}
+
+div.member-item header .member {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  margin-left: 10px;
+}
+
+.member strong {
+  display: block;
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+ul.member-info {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
+
+.member-info span {
+  font-size: 14px;
+  margin-top: 2px;
+}
+
+@media (max-width: 608px) {
+  div.member-item header .member {
+    margin-left: 70px;
+  }
+}

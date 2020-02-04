@@ -14,9 +14,7 @@ const App = () => {
   const [ members, setMembers ] = useState([]);
   const [ memberProfile, setMemberProfile ] = useState();
 
-  const listButtonClickHandler = async (e) => {
-    e.preventDefault();
-
+  const listMembers = async() => {
     const response = await api.get('/orgs/grupotesseract/public_members');
     const membersResponse = response.data.map((member) => ({
       avatarUrl: member.avatar_url,
@@ -26,21 +24,23 @@ const App = () => {
     setMembers(membersResponse);
   }
 
+  const listButtonClickHandler = (e) => {
+    e.preventDefault();
+    listMembers();
+  }
+
   const searchFormSubmitHandler = useCallback((inputValue) => {
-    api.get(`/users/${inputValue}`).then((response) => {
-      const memberResponse = [{
-        avatarUrl: response.data.avatar_url,
-        login: response.data.login,
-      }];
-  
-      setMembers(memberResponse);
-    }).catch((err) => {
-      console.log(err);
-    });
-  }, []);
+    if (!inputValue) {
+      listMembers();
+      return;
+    } 
+
+    const memberFiltered = members.filter((member) => member.login === inputValue);
+    setMembers(memberFiltered);
+  }, [members]);
 
   const memberClickHandler = async (e) => {
-    const memberLogin = e.target.dataset.member;
+    const memberLogin = e.currentTarget.dataset.member;
     const response = await api.get(`/users/${memberLogin}`);
     setMemberProfile(response.data);
   };
@@ -54,8 +54,13 @@ const App = () => {
       <header>
         <h1>Tesseract Team</h1>
         <img src="https://scontent.fsjp1-1.fna.fbcdn.net/v/t1.0-9/51922900_1126364370865329_2233861564945924096_n.jpg?_nc_cat=107&_nc_ohc=Kv0w0UKCGhEAX9SWfjl&_nc_ht=scontent.fsjp1-1.fna&oh=192bbd6c1142716aae077d2f59867e89&oe=5E8ED301" alt="Tesseract logo"/>
-        <button type="submit" onClick={listButtonClickHandler}>Look</button>
+        {!memberProfile ? (
+          <button type="submit" onClick={listButtonClickHandler}>Team</button>
+        ) : (
+          <button type="submit" onClick={backButtonClickHandler}>Back</button>
+        )}
       </header>
+      
       <main>
         {members.length > 0 && !memberProfile && (
           <>
@@ -63,14 +68,14 @@ const App = () => {
 
             <ul>
               {members.map((member, index) => (
-                <MemberItem data-member={member.login} key={index} member={member} onClick={memberClickHandler} />
+                <MemberItem key={index} member={member} onClick={memberClickHandler} />
               ))}
             </ul>
           </>
         )}
 
         {memberProfile && (
-          <MemberProfile profile={memberProfile} onBackButtonClick={backButtonClickHandler} />
+          <MemberProfile profile={memberProfile}/>
         )}
       </main>
     </div>
